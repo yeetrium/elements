@@ -1,0 +1,56 @@
+:host > .file-upload-wrapper {
+  align-items: center;
+  background-color: var(--ts-color-white);
+  border-radius: 3px;
+  border: var(--ts-border);
+  cursor: pointer;
+  display: flex;
+  height: calc(3.5 * var(--ts-unit));
+  justify-content: space-between;
+  max-width: 300px;
+  margin-bottom: calc(0.5 * var(--ts-unit));
+  overflow: hidden;
+  padding: calc(0.5 * var(--ts-unit)) var(--ts-unit);
+  position: relative;
+  transition: border 0.2s ease;
+  width: 300px;
+}
+
+:host > .file-upload-wrapper:hover {
+  border: 1px solid var(--ts-color-blue);
+}
+
+:host > .file-upload-wrapper > input {
+  cursor: pointer;
+  font-size: 100px;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+:host > .file-upload-wrapper > span {
+  background-color: var(--ts-color-blue);
+  border-radius: var(--ts-unit-double);
+  color: var(--ts-color-white);
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  padding: calc(0.2 * var(--ts-unit)) var(--ts-unit) 0;
+  text-transform: uppercase;
+}
+
+:host > label {
+  align-items: center;
+  color: var(--ts-color-gray-dark);
+  display: flex;
+  font-size: calc(1px + var(--ts-unit));
+  padding-left: calc(1px + var(--ts-unit));
+}
+
+:host > label > svg {
+  height: calc(1.5 * var(--ts-unit));
+  margin: calc(-0.2 * var(--ts-unit)) calc(0.5 * var(--ts-unit)) 0 0;
+  width: calc(1.5 * var(--ts-unit));
+}
