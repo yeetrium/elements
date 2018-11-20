@@ -1,4 +1,6 @@
-:host > .file-upload-wrapper {
+/* General/default state................................................ */
+
+:host > .file-upload-wrapper > .file-upload-button {
   align-items: center;
   background-color: var(--ts-color-white);
   border-radius: 3px;
@@ -16,11 +18,11 @@
   width: 300px;
 }
 
-:host > .file-upload-wrapper:hover {
+:host > .file-upload-wrapper > .file-upload-button:hover {
   border: 1px solid var(--ts-color-blue);
 }
 
-:host > .file-upload-wrapper > input {
+:host > .file-upload-wrapper > .file-upload-button > input {
   cursor: pointer;
   font-size: 100px;
   left: 0;
@@ -30,7 +32,7 @@
   width: 100%;
 }
 
-:host > .file-upload-wrapper > span {
+:host > .file-upload-wrapper > .file-upload-button > span {
   background-color: var(--ts-color-blue);
   border-radius: var(--ts-unit-double);
   color: var(--ts-color-white);
@@ -41,16 +43,64 @@
   text-transform: uppercase;
 }
 
-:host > label {
+:host > .file-upload-wrapper > label {
   align-items: center;
-  color: var(--ts-color-gray-dark);
+  color: var(--ts-color-gray-darker);
   display: flex;
   font-size: calc(1px + var(--ts-unit));
   padding-left: calc(1px + var(--ts-unit));
 }
 
-:host > label > svg {
+:host > .file-upload-wrapper > label > svg {
   height: calc(1.5 * var(--ts-unit));
   margin: calc(-0.2 * var(--ts-unit)) calc(0.5 * var(--ts-unit)) 0 0;
   width: calc(1.5 * var(--ts-unit));
+}
+
+/* Uploading state................................................... */
+
+:host > .file-upload-wrapper > .file-upload-card {
+  cursor: default;
+  height: calc(6.5 * var(--ts-unit));
+}
+
+:host > .file-upload-wrapper > .file-upload-card:hover {
+  border: var(--ts-border);
+}
+
+:host > .file-upload-wrapper > .file-upload--uploading > div { 
+  align-items: center;
+  border-radius: 50%;
+  color: var(--ts-color-white);
+  display: flex;
+  justify-content: center;
+}
+
+:host > .file-upload-wrapper > .file-upload--uploading > div:first-of-type {
+  background-color: var(--ts-color-blue);
+  height: 28px;
+  width: 28px;
+}
+
+:host > .file-upload-wrapper > .file-upload--uploading > div:first-of-type > span {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+:host > .file-upload-wrapper > .file-upload--uploading > label {
+  font-weight: 600;
+}
+
+:host > .file-upload-wrapper > .file-upload--uploading > div:last-of-type {
+  background-color: var(--ts-color-gray-dark);
+  height: 20px;
+  width: 20px;
+}
+
+:host > .file-upload-wrapper > .file-upload--uploading > div:last-of-type:hover {
+  cursor: pointer;
+}
+
+:host > .file-upload-wrapper > .file-upload--uploading > div:last-of-type > span {
+  margin-top: -1px;
 }

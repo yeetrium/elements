@@ -19,7 +19,8 @@
 
 	--ts-color-gray-rgb: 203, 215, 220;
 	--ts-color-gray: rgb(var(--ts-color-gray-rgb));
-	--ts-color-gray-dark: rgb(86, 86, 86);
+	--ts-color-gray-dark: rgb(155, 155, 155);
+	--ts-color-gray-darker: rgb(86, 86, 86);
 
 	--ts-color-slate: rgb(202, 215, 220);
 
