@@ -25,6 +25,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
       ${defaultState}
     </div>`, $template);
 
+    this.formData = new FormData();
     this.type = this.getAttribute('type');
     this.endpoint = this.getAttribute('endpoint');
     this.handleFiles = this.handleFiles.bind(this);
@@ -65,29 +66,33 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this[endpoint ? 'setAttribute' : 'removeAttribute']('endpoint', endpoint);
   }
   handleFiles(e) {
+    const $uploadWrapper = this.shadowRoot.querySelector('.file-upload-wrapper');
     this.type = 'uploading';
+
+    const uploading = e.type === 'change';
+    let file;
+
+    if (uploading) {
+      file = e.target.files[0];
+      $uploadWrapper.innerHTML = uploadingState(file.name);
+      this.formData.append('file', file);
+    } else {
+      file = this.formData.get('file');
+      $uploadWrapper.innerHTML = uploadingState(file.name);
+    }
     
-    const file = e.target.files[0];
-    this.shadowRoot.querySelector('.file-upload-wrapper').innerHTML = uploadingState(file.name);
-
-    let formData = new FormData();
-    formData.append('file', file);
-
-    // fetch(this.endpoint, {
-    //   method: 'POST',
-    //   body: formData
-    // })
-    // .then(res => res.json())
-    // .then(body => {
-    //   if (!body.ok) {
-    //     this.type = 'failed';
-    //     this.shadowRoot.querySelector('.file-upload-wrapper').innerHTML = failedState(file.name);
-    //   }
-    // });
-
-    // for (var pair of formData.entries()) {
-    //   console.log(pair[0] + ', ' + pair[1]); 
-    // }
+    fetch(this.endpoint, {
+      method: 'POST',
+      body: this.formData
+    })
+    .then(res => res.json())
+    .then(body => {
+      if (!body.ok) {
+        this.type = 'failed';
+        $uploadWrapper.innerHTML = failedState(file.name);
+        this.shadowRoot.querySelector('.retry').addEventListener('click', this.handleFiles);
+      }
+    });
   }
   handleClose(e) {
     if (e.target.classList.contains('file-upload-card--close')) {
