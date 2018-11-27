@@ -10,7 +10,7 @@
   height: calc(3.5 * var(--ts-unit));
   justify-content: space-between;
   max-width: 300px;
-  margin-bottom: calc(0.5 * var(--ts-unit));
+  margin-bottom: var(--ts-unit);
   overflow: hidden;
   padding: calc(0.5 * var(--ts-unit)) var(--ts-unit);
   position: relative;
@@ -62,13 +62,14 @@
 :host > .file-upload-wrapper > .file-upload-card {
   cursor: default;
   height: calc(6.5 * var(--ts-unit));
+  margin-bottom: 0;
 }
 
 :host > .file-upload-wrapper > .file-upload-card:hover {
   border: var(--ts-border);
 }
 
-:host > .file-upload-wrapper > .file-upload--uploading > div { 
+:host > .file-upload-wrapper > .file-upload--uploading > .icon { 
   align-items: center;
   border-radius: 50%;
   color: var(--ts-color-white);
@@ -76,31 +77,91 @@
   justify-content: center;
 }
 
-:host > .file-upload-wrapper > .file-upload--uploading > div:first-of-type {
+:host > .file-upload-wrapper > .file-upload--uploading > .icon:first-of-type {
   background-color: var(--ts-color-blue);
   height: 28px;
   width: 28px;
 }
 
-:host > .file-upload-wrapper > .file-upload--uploading > div:first-of-type > span {
+:host > .file-upload-wrapper > .file-upload--uploading > .icon:first-of-type > span {
   font-size: 20px;
   font-weight: bold;
 }
 
-:host > .file-upload-wrapper > .file-upload--uploading > label {
+:host > .file-upload-wrapper > .file-upload--uploading > .file-upload--info {
+  display: flex;
+  flex-direction: column;
+  max-width: calc(20 * var(--ts-unit));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:host > .file-upload-wrapper > .file-upload--uploading .progress {
+  height: calc(0.5 * var(--ts-unit));
+  margin-top: calc(0.5 * var(--ts-unit));
+  position: relative;
+  width: calc(20 * var(--ts-unit));
+}
+
+:host > .file-upload-wrapper > .file-upload--uploading .progress > div {
+  border-radius: calc(0.5 * var(--ts-unit));
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+:host > .file-upload-wrapper > .file-upload--uploading .progress > .track {
+  background-color: var(--ts-color-blue-lighter);
+}
+
+:host > .file-upload-wrapper > .file-upload--uploading .progress > .indicator {
+  animation-name: progress;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  background-color: var(--ts-color-blue);
+  width: 50px;
+  z-index: 2;
+}
+
+@keyframes progress {
+  0% {
+    left: 0;
+    width: calc(4 * var(--ts-unit));
+  }
+  25% {
+    left: 0;
+    width: calc(10 * var(--ts-unit));
+  }
+  50% {
+    left: calc(5 * var(--ts-unit));
+    width: calc(12 * var(--ts-unit));
+  }
+  75% {
+    left: calc(13 * var(--ts-unit));
+    width: calc(15 * var(--ts-unit));
+  }
+  100% {
+    left: 150%;
+    width: 0;
+  }
+}
+
+:host > .file-upload-wrapper > .file-upload--uploading label {
   font-weight: 600;
 }
 
-:host > .file-upload-wrapper > .file-upload--uploading > div:last-of-type {
+:host > .file-upload-wrapper > .file-upload--uploading > .icon:last-of-type {
   background-color: var(--ts-color-gray-dark);
   height: 20px;
   width: 20px;
 }
 
-:host > .file-upload-wrapper > .file-upload--uploading > div:last-of-type:hover {
+:host > .file-upload-wrapper > .file-upload--uploading > .icon:last-of-type:hover {
   cursor: pointer;
 }
 
-:host > .file-upload-wrapper > .file-upload--uploading > div:last-of-type > span {
+:host > .file-upload-wrapper > .file-upload--uploading > .icon:last-of-type > span {
   margin-top: -1px;
 }
