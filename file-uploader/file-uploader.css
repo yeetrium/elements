@@ -117,7 +117,7 @@
 
 :host > .file-upload-wrapper > .file-upload--uploading .progress > .indicator {
   animation-name: progress;
-  animation-duration: 1.5s;
+  animation-duration: 1.25s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   background-color: var(--ts-color-blue);
