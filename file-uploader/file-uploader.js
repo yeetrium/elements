@@ -99,6 +99,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
       this.type = 'upload';
       this.shadowRoot.querySelector('.file-upload-wrapper').innerHTML = defaultState;
       this.shadowRoot.querySelector('input').addEventListener('change', this.handleFiles);
+      this.formData.delete('file');
     }
   }
 }
