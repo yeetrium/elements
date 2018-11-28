@@ -1,7 +1,7 @@
 /* General/default state................................................ */
 
 :host > .file-upload-wrapper > .file-upload-button,
-:host > .file-upload-state > .file-upload-card {
+:host > .file-card-wrapper > .file-card {
   align-items: center;
   background-color: var(--ts-color-white);
   border-radius: 3px;
@@ -60,23 +60,23 @@
 
 /* Uploading card shared styles....................................... */
 
-:host > .file-upload-state > .file-upload-card {
+:host > .file-card-wrapper > .file-card {
   margin-top: calc(2 * var(--ts-unit));
 }
 
 /* Uploading state................................................... */
 
-:host > .file-upload-state > .file-upload-card {
+:host > .file-card-wrapper > .file-card {
   cursor: default;
   height: calc(6.5 * var(--ts-unit));
   margin-bottom: 0;
 }
 
-:host > .file-upload-state > .file-upload-card:hover {
+:host > .file-card-wrapper > .file-card:hover {
   border: var(--ts-border);
 }
 
-:host > .file-upload-state .icon { 
+:host > .file-card-wrapper .icon { 
   align-items: center;
   border-radius: 50%;
   color: var(--ts-color-white);
@@ -84,18 +84,18 @@
   justify-content: center;
 }
 
-:host > .file-upload-state .icon:first-of-type {
+:host > .file-card-wrapper .icon:first-of-type {
   background-color: var(--ts-color-blue);
   height: 28px;
   width: 28px;
 }
 
-:host > .file-upload-state .icon:first-of-type > span {
+:host > .file-card-wrapper .icon:first-of-type > span {
   font-size: 20px;
   font-weight: bold;
 }
 
-:host > .file-upload-state .file-upload--info {
+:host > .file-card-wrapper .file-upload--info {
   display: flex;
   flex-direction: column;
   max-width: calc(16.5 * var(--ts-unit));
@@ -104,25 +104,25 @@
   white-space: nowrap;
 }
 
-:host > .file-upload-state > .file-upload--uploading .progress {
+:host > .file-card-wrapper > .file-card--uploading .progress {
   height: calc(0.5 * var(--ts-unit));
   margin-top: calc(0.5 * var(--ts-unit));
   position: relative;
   width: calc(16.5 * var(--ts-unit));
 }
 
-:host > .file-upload-state > .file-upload--uploading .progress > div {
+:host > .file-card-wrapper > .file-card--uploading .progress > div {
   border-radius: calc(0.5 * var(--ts-unit));
   height: 100%;
   position: absolute;
   width: 100%;
 }
 
-:host > .file-upload-state > .file-upload--uploading .progress > .track {
+:host > .file-card-wrapper > .file-card--uploading .progress > .track {
   background-color: var(--ts-color-blue-lighter);
 }
 
-:host > .file-upload-state > .file-upload--uploading .progress > .indicator {
+:host > .file-card-wrapper > .file-card--uploading .progress > .indicator {
   animation-name: progress;
   animation-duration: 1.25s;
   animation-iteration-count: infinite;
@@ -135,11 +135,11 @@
 @keyframes progress {
   0% {
     left: 0;
-    width: calc(4 * var(--ts-unit));
+    width: calc(2.5 * var(--ts-unit));
   }
   25% {
     left: 0;
-    width: calc(10 * var(--ts-unit));
+    width: calc(8 * var(--ts-unit));
   }
   50% {
     left: calc(5 * var(--ts-unit));
@@ -155,39 +155,39 @@
   }
 }
 
-:host > .file-upload-state > .file-upload--uploading label {
+:host > .file-card-wrapper > .file-card--uploading label {
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-:host > .file-upload-state .icon:last-of-type {
+:host > .file-card-wrapper .icon:last-of-type {
   background-color: var(--ts-color-gray-dark);
   height: 20px;
   margin-right: var(--ts-unit);
   width: 20px;
 }
 
-:host > .file-upload-state .icon:last-of-type:hover {
+:host > .file-card-wrapper .icon:last-of-type:hover {
   cursor: pointer;
 }
 
-:host > .file-upload-state .icon:last-of-type > span {
+:host > .file-card-wrapper .icon:last-of-type > span {
   margin-top: -1px;
 }
 
 /* Failed state..................................................... */
 
-:host > .file-upload-state > .file-upload--failed {
+:host > .file-card-wrapper > .file-card--failed {
   border-color: #FF1744;
 }
 
-:host > .file-upload-state > .file-upload--failed:hover {
+:host > .file-card-wrapper > .file-card--failed:hover {
   border-color: #FF1744;
 }
 
-:host > .file-upload-state > .file-upload--failed .icon:first-of-type {
+:host > .file-card-wrapper > .file-card--failed .icon:first-of-type {
   background-color: #FF1744;
   border-left: 14px solid var(--ts-color-white);
   border-right: 14px solid var(--ts-color-white);
@@ -195,32 +195,32 @@
   border-radius: 0px;
 }
 
-:host > .file-upload-state > .file-upload--failed .icon:first-of-type > span {
+:host > .file-card-wrapper > .file-card--failed .icon:first-of-type > span {
   margin-top: 34px;
 }
 
-:host > .file-upload-state > .file-upload--failed label {
+:host > .file-card-wrapper > .file-card--failed label {
   font-weight: 600;
 }
 
-:host > .file-upload-state > .file-upload--failed .file-upload--info {
+:host > .file-card-wrapper > .file-card--failed .file-upload--info {
   display: flex;
   flex-direction: row;
   font-size: var(--ts-unit);
 }
 
-:host > .file-upload-state > .file-upload--failed small {  
+:host > .file-card-wrapper > .file-card--failed small {  
   font-size: var(--ts-unit);
 }
 
-:host > .file-upload-state > .file-upload--failed small:first-of-type {
+:host > .file-card-wrapper > .file-card--failed small:first-of-type {
   color: #7F7F7F;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-:host > .file-upload-state > .file-upload--failed small:last-of-type {
+:host > .file-card-wrapper > .file-card--failed small:last-of-type {
   color: var(--ts-color-blue);
   cursor: pointer;
   margin-left: calc(0.2 * var(--ts-unit));

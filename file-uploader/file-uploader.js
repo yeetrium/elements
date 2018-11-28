@@ -24,7 +24,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     <div class="file-upload-wrapper">
       ${defaultState}
     </div>
-    <div class="file-upload-state"></div>`, 
+    <div class="file-card-wrapper"></div>`, 
     $template);
 
     this.formData = new FormData();
@@ -42,7 +42,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     }
 
     if (newValue === 'uploading') {
-      this.shadowRoot.querySelector('.file-upload-state').addEventListener('click', this.handleClose);
+      this.shadowRoot.querySelector('.file-card-wrapper').addEventListener('click', this.handleClose);
     }
   }
   get type() {
@@ -68,7 +68,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this[endpoint ? 'setAttribute' : 'removeAttribute']('endpoint', endpoint);
   }
   handleFiles(e) {
-    const $uploadWrapper = this.shadowRoot.querySelector('.file-upload-state');
+    const $fileCard = this.shadowRoot.querySelector('.file-card-wrapper');
     this.type = 'uploading';
 
     const uploading = e.type === 'change';
@@ -76,11 +76,11 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
 
     if (uploading) {
       file = e.target.files[0];
-      $uploadWrapper.innerHTML = uploadingState(file.name);
+      $fileCard.innerHTML = uploadingState(file.name);
       this.formData.append('file', file);
     } else {
       file = this.formData.get('file');
-      $uploadWrapper.innerHTML = uploadingState(file.name);
+      $fileCard.innerHTML = uploadingState(file.name);
     }
     
     fetch(this.endpoint, {
@@ -91,15 +91,15 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     .then(body => {
       if (!body.ok) {
         this.type = 'failed';
-        $uploadWrapper.innerHTML = failedState(file.name);
+        $fileCard.innerHTML = failedState(file.name);
         this.shadowRoot.querySelector('.retry').addEventListener('click', this.handleFiles);
       }
     });
   }
   handleClose(e) {
-    if (e.target.classList.contains('file-upload-card--close')) {
+    if (e.target.classList.contains('file-card--close')) {
       this.type = 'upload';
-      this.shadowRoot.querySelector('.file-upload-state').innerHTML = '';
+      this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = '';
       this.shadowRoot.querySelector('input').addEventListener('change', this.handleFiles);
       this.formData.delete('file');
     }

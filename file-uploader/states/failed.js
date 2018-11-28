@@ -1,6 +1,6 @@
 export function failedState(filename) {
   return `
-  <div class="file-upload-card file-upload--failed">
+  <div class="file-card file-card--failed">
     <div class="icon">
       <span>!</span>
     </div>
@@ -11,8 +11,8 @@ export function failedState(filename) {
         <small class="retry">Retry</small>
       </div>
     </div>
-    <div class="file-upload-card--close icon">
-      <span class="file-upload-card--close">x</span>
+    <div class="file-card--close icon">
+      <span class="file-card--close">x</span>
     </div>
   </div>`;
 }
