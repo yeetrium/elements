@@ -1,6 +1,6 @@
 export function uploadingState(filename) {
   return `
-  <div class="file-upload-button file-upload-card file-upload--uploading">
+  <div class="file-upload-card file-upload--uploading">
     <div class="icon">
       <span>&#8593;</span>
     </div>

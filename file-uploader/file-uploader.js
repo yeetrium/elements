@@ -23,7 +23,9 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this.template(`
     <div class="file-upload-wrapper">
       ${defaultState}
-    </div>`, $template);
+    </div>
+    <div class="file-upload-state"></div>`, 
+    $template);
 
     this.formData = new FormData();
     this.type = this.getAttribute('type');
@@ -40,7 +42,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     }
 
     if (newValue === 'uploading') {
-      this.shadowRoot.querySelector('.file-upload-wrapper').addEventListener('click', this.handleClose);
+      this.shadowRoot.querySelector('.file-upload-state').addEventListener('click', this.handleClose);
     }
   }
   get type() {
@@ -66,7 +68,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this[endpoint ? 'setAttribute' : 'removeAttribute']('endpoint', endpoint);
   }
   handleFiles(e) {
-    const $uploadWrapper = this.shadowRoot.querySelector('.file-upload-wrapper');
+    const $uploadWrapper = this.shadowRoot.querySelector('.file-upload-state');
     this.type = 'uploading';
 
     const uploading = e.type === 'change';
@@ -97,7 +99,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
   handleClose(e) {
     if (e.target.classList.contains('file-upload-card--close')) {
       this.type = 'upload';
-      this.shadowRoot.querySelector('.file-upload-wrapper').innerHTML = defaultState;
+      this.shadowRoot.querySelector('.file-upload-state').innerHTML = '';
       this.shadowRoot.querySelector('input').addEventListener('change', this.handleFiles);
       this.formData.delete('file');
     }

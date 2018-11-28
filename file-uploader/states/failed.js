@@ -1,6 +1,6 @@
 export function failedState(filename) {
   return `
-  <div class="file-upload-button file-upload-card file-upload--failed">
+  <div class="file-upload-card file-upload--failed">
     <div class="icon">
       <span>!</span>
     </div>
