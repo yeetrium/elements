@@ -15,7 +15,7 @@
   overflow: hidden;
   padding: calc(0.5 * var(--ts-unit)) var(--ts-unit);
   position: relative;
-  transition: border 0.2s ease;
+  transition: border 0.15s ease;
   width: 300px;
 }
 
@@ -64,6 +64,32 @@
   margin-top: calc(2 * var(--ts-unit));
 }
 
+:host > .file-card-wrapper > .file-card--failed label,
+:host > .file-card-wrapper > .file-card--download label {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:host > .file-card-wrapper > .file-card--failed .file-upload--info,
+:host > .file-card-wrapper > .file-card--download > .file-upload--info > div {
+  line-height: 14px;
+}
+
+:host > .file-card-wrapper > .file-card--failed small,
+:host > .file-card-wrapper > .file-card--download small {  
+  font-size: calc(1px + var(--ts-unit));
+}
+
+:host > .file-card-wrapper > .file-card--failed small:first-of-type,
+:host > .file-card-wrapper > .file-card--download small {
+  color: #7F7F7F;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* Uploading state................................................... */
 
 :host > .file-card-wrapper > .file-card {
@@ -95,7 +121,8 @@
   font-weight: bold;
 }
 
-:host > .file-card-wrapper .file-upload--info {
+:host > .file-card-wrapper .file-upload--info,
+:host > .file-card--download .file-upload--info {
   display: flex;
   flex-direction: column;
   max-width: calc(16.5 * var(--ts-unit));
@@ -199,25 +226,10 @@
   margin-top: 34px;
 }
 
-:host > .file-card-wrapper > .file-card--failed label {
-  font-weight: 600;
-}
-
 :host > .file-card-wrapper > .file-card--failed .file-upload--info {
   display: flex;
   flex-direction: row;
-  font-size: var(--ts-unit);
-}
-
-:host > .file-card-wrapper > .file-card--failed small {  
-  font-size: var(--ts-unit);
-}
-
-:host > .file-card-wrapper > .file-card--failed small:first-of-type {
-  color: #7F7F7F;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: calc(1px + var(--ts-unit));
 }
 
 :host > .file-card-wrapper > .file-card--failed small:last-of-type {
@@ -226,3 +238,95 @@
   margin-left: calc(0.2 * var(--ts-unit));
 }
 
+/* Download state.................................................. */
+
+:host > .file-card-wrapper > .file-card--download:hover {
+  border-color: var(--ts-color-blue);
+  cursor: pointer;
+}
+
+:host > .file-card-wrapper > .file-card--download .icon:first-of-type {
+  background-color: var(--ts-color-white);
+  color: var(--ts-color-slate);
+  height: 44px;
+  position: relative;
+  transition: color 0.15s ease;
+  width: 35px;
+}
+
+:host > .file-card-wrapper > .file-card--download:hover .icon:first-of-type {
+  color: var(--ts-color-blue);
+}
+
+:host > .file-card-wrapper > .file-card--download .icon:first-of-type span {
+  bottom: 4px;
+  color: var(--ts-color-black);
+  font-size: calc(1px + var(--ts-unit));
+  position: absolute;
+  text-transform: uppercase;
+  transition: color 0.15s ease;
+}
+
+:host > .file-card-wrapper > .file-card--download:hover .icon:first-of-type span {
+  color: var(--ts-color-blue);
+}
+
+:host > .file-card-wrapper > .file-card--download:hover .icon:first-of-type span:before {
+  animation-name: appear;
+  animation-duration: 0.15s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  background-color: var(--ts-color-blue);
+  border-radius: 50%;
+  content: '';
+  height: 22px;
+  left: 15px;
+  position: absolute;
+  top: 8px;
+  width: 22px;
+}
+
+:host > .file-card-wrapper > .file-card--download:hover .icon:first-of-type span:after {
+  animation-name: appear;
+  animation-duration: 0.15s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  color: white;
+  content: '↓';
+  font-size: 17px;
+  left: 20px;
+  position: absolute;
+  top: 10px;
+}
+
+@keyframes appear {
+  0% {
+    top: 30px;
+  }
+  100% {
+    top: 10px;
+  }
+}
+
+:host > .file-card-wrapper > .file-card--download label:hover {
+  cursor: pointer;
+}
+
+:host > .file-card-wrapper > .file-card--download small > small {
+  text-transform: uppercase;
+}
+
+:host > .file-card-wrapper > .file-card--download .download .message {
+  color: var(--ts-color-blue);
+  text-transform: unset;
+}
+
+:host > .file-card-wrapper > .file-card--download > .icon:last-of-type {
+  background-color: var(--ts-color-white);
+}
+
+:host > .file-card-wrapper > .file-card--download > .icon:last-of-type > .file-card--menu {
+  color: var(--ts-color-gray-dark);
+  font-size: calc(3 * var(--ts-unit));
+  margin-top: -13px;
+}

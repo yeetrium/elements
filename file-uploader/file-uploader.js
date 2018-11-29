@@ -2,6 +2,7 @@ import { Base } from '/core/component.js';
 import { defaultState } from './states/default.js';
 import { uploadingState } from './states/uploading.js';
 import { failedState } from './states/failed.js';
+import { downloadState } from './states/download.js';
 
 const [
   $template,
@@ -27,18 +28,21 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     <div class="file-card-wrapper"></div>`, 
     $template);
 
+    this.fileType;
     this.formData = new FormData();
     this.type = this.getAttribute('type');
     this.endpoint = this.getAttribute('endpoint');
-    this.handleFiles = this.handleFiles.bind(this);
+    this.handleFile = this.handleFile.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleDownload = this.handleDownload.bind(this);
+    this.resetFileInfo = this.resetFileInfo.bind(this);
 
     return self;
   }
   attributeChangedCallback(name, oldValue, newValue) {
     // attach event listener when component first loads, otherwise, attach it in the handleClose fn
     if (newValue === 'upload' && oldValue === null) {
-      this.shadowRoot.querySelector('input').addEventListener('change', this.handleFiles);
+      this.shadowRoot.querySelector('input').addEventListener('change', this.handleFile);
     }
 
     if (newValue === 'uploading') {
@@ -67,7 +71,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this[$endpoint] = endpoint;
     this[endpoint ? 'setAttribute' : 'removeAttribute']('endpoint', endpoint);
   }
-  handleFiles(e) {
+  handleFile(e) {
     const $fileCard = this.shadowRoot.querySelector('.file-card-wrapper');
     this.type = 'uploading';
 
@@ -89,10 +93,17 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     })
     .then(res => res.json())
     .then(body => {
+      if (body.ok) {
+        this.type = 'download';
+        $fileCard.innerHTML = downloadState(file);
+        this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseenter', this.handleDownload);
+        this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseleave', this.resetFileInfo);
+      }
+
       if (!body.ok) {
         this.type = 'failed';
         $fileCard.innerHTML = failedState(file.name);
-        this.shadowRoot.querySelector('.retry').addEventListener('click', this.handleFiles);
+        this.shadowRoot.querySelector('.retry').addEventListener('click', this.handleFile);
       }
     });
   }
@@ -100,9 +111,16 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     if (e.target.classList.contains('file-card--close')) {
       this.type = 'upload';
       this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = '';
-      this.shadowRoot.querySelector('input').addEventListener('change', this.handleFiles);
+      this.shadowRoot.querySelector('input').addEventListener('change', this.handleFile);
       this.formData.delete('file');
     }
+  }
+  handleDownload() {
+    this.fileType = this.shadowRoot.querySelector('.download').innerHTML;
+    this.shadowRoot.querySelector('.download').innerHTML = '<small class="message">Click to download</span>';
+  }
+  resetFileInfo() {
+    this.shadowRoot.querySelector('.download').innerHTML = this.fileType;
   }
 }
 
