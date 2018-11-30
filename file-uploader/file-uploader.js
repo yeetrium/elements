@@ -7,23 +7,26 @@ import { downloadState } from './states/download.js';
 const [
   $template,
   $state,
-  $endpoint
+  $endpoint,
+  $filetypes
 ] = [
   Symbol('template'),
   Symbol('state'),
-  Symbol('endpoint')
+  Symbol('endpoint'),
+  Symbol('filetypes')
 ];
 
 class FileUploader extends Base(HTMLElement, 'FileUploader') {
-  static get observedAttributes() { return ['state', 'endpoint']; }
+  static get observedAttributes() { return ['state', 'endpoint', 'filetypes']; }
   
   constructor(...args) {
     const self = super(...args);
+    this.filetypes = this.getAttribute('filetypes');    
 
     this.styles('/file-uploader/file-uploader.css');
     this.template(`
     <div class="file-upload-wrapper">
-      ${defaultState}
+      ${defaultState(this.filetypes)}
     </div>
     <div class="file-card-wrapper"></div>`, 
     $template);
@@ -32,8 +35,8 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this.formData = new FormData();
     this.state = this.getAttribute('state');
     this.endpoint = this.getAttribute('endpoint');
-    this.handleFile = this.handleFile.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
     this.handleDownload = this.handleDownload.bind(this);
     this.resetFileInfo = this.resetFileInfo.bind(this);
 
@@ -42,7 +45,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
   attributeChangedCallback(name, oldValue, newValue) {
     // attach event listener when component first loads, otherwise, attach it in the handleClose fn
     if (newValue === 'upload' && oldValue === null) {
-      this.shadowRoot.querySelector('input').addEventListener('change', this.handleFile);
+      this.shadowRoot.querySelector('input').addEventListener('change', this.handleUpload);
     }
 
     if (newValue === 'uploading') {
@@ -66,12 +69,23 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
   set endpoint(endpoint) {
     if (endpoint === this[$endpoint]) {
       return;
-    }
+    }    
 
     this[$endpoint] = endpoint;
     this[endpoint ? 'setAttribute' : 'removeAttribute']('endpoint', endpoint);
   }
-  handleFile(e) {
+  get filetypes() {
+    return this[$filetypes];
+  }
+  set filetypes(filetypes) {
+    if (filetypes === this[$filetypes]) {
+      return;
+    }
+
+    this[$filetypes] = filetypes;
+    this[filetypes ? 'setAttribute' : 'removeAttribute']('filetypes', filetypes);
+  }
+  handleUpload(e) {
     const $fileCard = this.shadowRoot.querySelector('.file-card-wrapper');
     this.state = 'uploading';
 
@@ -103,13 +117,13 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
       if (!body.ok) {
         this.state = 'failed';
         $fileCard.innerHTML = failedState(file.name);
-        this.shadowRoot.querySelector('.retry').addEventListener('click', this.handleFile);
+        this.shadowRoot.querySelector('.retry').addEventListener('click', this.handleUpload);
       }
     }).catch(err => {
       if (err) {
         this.state = 'failed';
         $fileCard.innerHTML = failedState(file.name);
-        this.shadowRoot.querySelector('.retry').addEventListener('click', this.handleFile);
+        this.shadowRoot.querySelector('.retry').addEventListener('click', this.handleUpload);
       }
     });
   }
@@ -117,7 +131,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     if (e.target.classList.contains('file-card--close')) {
       this.state = 'upload';
       this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = '';
-      this.shadowRoot.querySelector('input').addEventListener('change', this.handleFile);
+      this.shadowRoot.querySelector('input').addEventListener('change', this.handleUpload);
       this.formData.delete('file');
     }
   }
