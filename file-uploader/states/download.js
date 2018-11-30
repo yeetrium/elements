@@ -25,7 +25,7 @@ export function downloadState(file) {
       <label>${file.name}</label>
       <div>
         <small class="filesize">${filesize} - </small>
-        <small class="download"><small>${fileType}</small> Document</small>
+        <small class="filetype"><small>${fileType}</small> Document</small>
       </div>
     </div>
     <div class="icon">

@@ -316,7 +316,7 @@
   text-transform: uppercase;
 }
 
-:host > .file-card-wrapper > .file-card--download .download .message {
+:host > .file-card-wrapper > .file-card--download .filetype .message {
   color: var(--ts-color-blue);
   text-transform: unset;
 }
@@ -327,6 +327,7 @@
 
 :host > .file-card-wrapper > .file-card--download > .icon:last-of-type > .file-card--menu {
   color: var(--ts-color-gray-dark);
+  display: none;
   font-size: calc(3 * var(--ts-unit));
   margin-top: -13px;
 }

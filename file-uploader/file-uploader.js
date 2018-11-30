@@ -6,16 +6,16 @@ import { downloadState } from './states/download.js';
 
 const [
   $template,
-  $type,
+  $state,
   $endpoint
 ] = [
   Symbol('template'),
-  Symbol('type'),
+  Symbol('state'),
   Symbol('endpoint')
 ];
 
 class FileUploader extends Base(HTMLElement, 'FileUploader') {
-  static get observedAttributes() { return ['type', 'endpoint']; }
+  static get observedAttributes() { return ['state', 'endpoint']; }
   
   constructor(...args) {
     const self = super(...args);
@@ -30,7 +30,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
 
     this.fileType;
     this.formData = new FormData();
-    this.type = this.getAttribute('type');
+    this.state = this.getAttribute('state');
     this.endpoint = this.getAttribute('endpoint');
     this.handleFile = this.handleFile.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -49,16 +49,16 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
       this.shadowRoot.querySelector('.file-card-wrapper').addEventListener('click', this.handleClose);
     }
   }
-  get type() {
-    return this[$type];
+  get state() {
+    return this[$state];
   }
-  set type(type) {
-    if (type === this[$type]) {
+  set state(state) {
+    if (state === this[$state]) {
       return;
     }
 
-    this[$type] = type;
-    this[type ? 'setAttribute' : 'removeAttribute']('type', type);
+    this[$state] = state;
+    this[state ? 'setAttribute' : 'removeAttribute']('state', state);
   }
   get endpoint() {
     return this[$endpoint];
@@ -73,7 +73,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
   }
   handleFile(e) {
     const $fileCard = this.shadowRoot.querySelector('.file-card-wrapper');
-    this.type = 'uploading';
+    this.state = 'uploading';
 
     const uploading = e.type === 'change';
     let file;
@@ -94,14 +94,20 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     .then(res => res.json())
     .then(body => {
       if (body.ok) {
-        this.type = 'download';
+        this.state = 'download';
         $fileCard.innerHTML = downloadState(file);
         this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseenter', this.handleDownload);
         this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseleave', this.resetFileInfo);
       }
 
       if (!body.ok) {
-        this.type = 'failed';
+        this.state = 'failed';
+        $fileCard.innerHTML = failedState(file.name);
+        this.shadowRoot.querySelector('.retry').addEventListener('click', this.handleFile);
+      }
+    }).catch(err => {
+      if (err) {
+        this.state = 'failed';
         $fileCard.innerHTML = failedState(file.name);
         this.shadowRoot.querySelector('.retry').addEventListener('click', this.handleFile);
       }
@@ -109,18 +115,18 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
   }
   handleClose(e) {
     if (e.target.classList.contains('file-card--close')) {
-      this.type = 'upload';
+      this.state = 'upload';
       this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = '';
       this.shadowRoot.querySelector('input').addEventListener('change', this.handleFile);
       this.formData.delete('file');
     }
   }
   handleDownload() {
-    this.fileType = this.shadowRoot.querySelector('.download').innerHTML;
-    this.shadowRoot.querySelector('.download').innerHTML = '<small class="message">Click to download</span>';
+    this.fileType = this.shadowRoot.querySelector('.filetype').innerHTML;
+    this.shadowRoot.querySelector('.filetype').innerHTML = '<small class="message">Click to download</span>';
   }
   resetFileInfo() {
-    this.shadowRoot.querySelector('.download').innerHTML = this.fileType;
+    this.shadowRoot.querySelector('.filetype').innerHTML = this.fileType;
   }
 }
 
