@@ -1,8 +1,9 @@
 import { Base } from '/core/component.js';
 import { defaultState } from './states/default.js';
 import { uploadingState } from './states/uploading.js';
-import { failedState } from './states/failed.js';
-import { downloadState } from './states/download.js';
+// import { failedState } from './states/failed.js';
+// import { downloadState } from './states/download.js';
+import { uploadFile } from './utils/uploadFile.js';
 
 const [
   $template,
@@ -101,31 +102,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
       $fileCard.innerHTML = uploadingState(file.name);
     }
     
-    fetch(this.endpoint, {
-      method: 'POST',
-      body: this.formData
-    })
-    .then(res => res.json())
-    .then(body => {
-      if (body.ok) {
-        this.state = 'download';
-        $fileCard.innerHTML = downloadState(file);
-        this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseenter', this.handleDownload);
-        this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseleave', this.resetFileInfo);
-      }
-
-      if (!body.ok) {
-        this.state = 'failed';
-        $fileCard.innerHTML = failedState(file.name);
-        this.shadowRoot.querySelector('.retry').addEventListener('click', this.handleUpload);
-      }
-    }).catch(err => {
-      if (err) {
-        this.state = 'failed';
-        $fileCard.innerHTML = failedState(file.name);
-        this.shadowRoot.querySelector('.retry').addEventListener('click', this.handleUpload);
-      }
-    });
+    uploadFile(this, $fileCard, file);
   }
   handleClose(e) {
     if (e.target.classList.contains('file-card--close')) {
