@@ -13,7 +13,7 @@
   max-width: 300px;
   margin-bottom: var(--ts-unit);
   overflow: hidden;
-  padding: calc(0.5 * var(--ts-unit)) var(--ts-unit);
+  padding: calc(0.5 * var(--ts-unit)) calc(1px + var(--ts-unit));
   position: relative;
   transition: border 0.15s ease;
   width: 300px;
@@ -64,6 +64,16 @@
   margin-top: calc(2 * var(--ts-unit));
 }
 
+:host > .file-card-wrapper > .file-card > .file-info--wrapper {
+  align-items: center;
+  display: flex;
+}
+
+:host > .file-card-wrapper > .file-card > .file-info--wrapper > .icon-wrapper {
+  margin-right: var(--ts-unit);
+  width: calc(3.5 * var(--ts-unit));
+}
+
 :host > .file-card-wrapper > .file-card--failed label,
 :host > .file-card-wrapper > .file-card--download label {
   font-weight: 600;
@@ -110,7 +120,7 @@
   justify-content: center;
 }
 
-:host > .file-card-wrapper .icon:first-of-type {
+:host > .file-card-wrapper > .file-card .icon:first-of-type {
   background-color: var(--ts-color-blue);
   height: 28px;
   width: 28px;
