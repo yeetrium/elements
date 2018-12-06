@@ -8,12 +8,12 @@
   border: var(--ts-border);
   cursor: pointer;
   display: flex;
-  height: calc(3.5 * var(--ts-unit));
+  height: calc(3.5 * var(--ts-unit-half));
   justify-content: space-between;
   max-width: 300px;
-  margin-bottom: var(--ts-unit);
+  margin-bottom: var(--ts-unit-half);
   overflow: hidden;
-  padding: calc(0.5 * var(--ts-unit)) var(--ts-unit);
+  padding: calc(0.5 * var(--ts-unit-half)) var(--ts-unit-half);
   position: relative;
   transition: border 0.15s ease;
   width: 300px;
@@ -35,12 +35,12 @@
 
 :host > .file-upload-wrapper > .file-upload-button > span {
   background-color: var(--ts-color-blue);
-  border-radius: var(--ts-unit-double);
+  border-radius: var(--ts-unit);
   color: var(--ts-color-white);
   cursor: pointer;
   font-size: 12px;
   letter-spacing: 0.5px;
-  padding: calc(0.2 * var(--ts-unit)) var(--ts-unit) 0;
+  padding: calc(0.2 * var(--ts-unit-half)) var(--ts-unit-half) 0;
   text-transform: uppercase;
 }
 
@@ -48,20 +48,20 @@
   align-items: center;
   color: var(--ts-color-gray-darker);
   display: flex;
-  font-size: calc(1px + var(--ts-unit));
-  padding-left: calc(1px + var(--ts-unit));
+  font-size: calc(1px + var(--ts-unit-half));
+  padding-left: calc(1px + var(--ts-unit-half));
 }
 
 :host > .file-upload-wrapper > label > svg {
-  height: calc(1.5 * var(--ts-unit));
-  margin: calc(-0.2 * var(--ts-unit)) calc(0.5 * var(--ts-unit)) 0 0;
-  width: calc(1.5 * var(--ts-unit));
+  height: calc(1.5 * var(--ts-unit-half));
+  margin: calc(-0.2 * var(--ts-unit-half)) calc(0.5 * var(--ts-unit-half)) 0 0;
+  width: calc(1.5 * var(--ts-unit-half));
 }
 
 /* Uploading card shared styles....................................... */
 
 :host > .file-card-wrapper > .file-card {
-  margin-top: calc(2 * var(--ts-unit));
+  margin-top: calc(2 * var(--ts-unit-half));
 }
 
 :host > .file-card-wrapper > .file-card--failed label,
@@ -79,7 +79,7 @@
 
 :host > .file-card-wrapper > .file-card--failed small,
 :host > .file-card-wrapper > .file-card--download small {  
-  font-size: calc(1px + var(--ts-unit));
+  font-size: calc(1px + var(--ts-unit-half));
 }
 
 :host > .file-card-wrapper > .file-card--failed small:first-of-type,
@@ -94,7 +94,7 @@
 
 :host > .file-card-wrapper > .file-card {
   cursor: default;
-  height: calc(6.5 * var(--ts-unit));
+  height: calc(6.5 * var(--ts-unit-half));
   margin-bottom: 0;
 }
 
@@ -125,21 +125,21 @@
 :host > .file-card--download .file-upload--info {
   display: flex;
   flex-direction: column;
-  max-width: calc(16.5 * var(--ts-unit));
+  max-width: calc(16.5 * var(--ts-unit-half));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 :host > .file-card-wrapper > .file-card--uploading .progress {
-  height: calc(0.5 * var(--ts-unit));
-  margin-top: calc(0.5 * var(--ts-unit));
+  height: calc(0.5 * var(--ts-unit-half));
+  margin-top: calc(0.5 * var(--ts-unit-half));
   position: relative;
-  width: calc(16.5 * var(--ts-unit));
+  width: calc(16.5 * var(--ts-unit-half));
 }
 
 :host > .file-card-wrapper > .file-card--uploading .progress > div {
-  border-radius: calc(0.5 * var(--ts-unit));
+  border-radius: calc(0.5 * var(--ts-unit-half));
   height: 100%;
   position: absolute;
   width: 100%;
@@ -162,19 +162,19 @@
 @keyframes progress {
   0% {
     left: 0;
-    width: calc(2.5 * var(--ts-unit));
+    width: calc(2.5 * var(--ts-unit-half));
   }
   25% {
     left: 0;
-    width: calc(8 * var(--ts-unit));
+    width: calc(8 * var(--ts-unit-half));
   }
   50% {
-    left: calc(5 * var(--ts-unit));
-    width: calc(12 * var(--ts-unit));
+    left: calc(5 * var(--ts-unit-half));
+    width: calc(12 * var(--ts-unit-half));
   }
   75% {
-    left: calc(13 * var(--ts-unit));
-    width: calc(15 * var(--ts-unit));
+    left: calc(13 * var(--ts-unit-half));
+    width: calc(15 * var(--ts-unit-half));
   }
   100% {
     left: 150%;
@@ -192,7 +192,7 @@
 :host > .file-card-wrapper .icon:last-of-type {
   background-color: var(--ts-color-gray-dark);
   height: 20px;
-  margin-right: var(--ts-unit);
+  margin-right: var(--ts-unit-half);
   width: 20px;
 }
 
@@ -229,13 +229,13 @@
 :host > .file-card-wrapper > .file-card--failed .file-upload--info {
   display: flex;
   flex-direction: row;
-  font-size: calc(1px + var(--ts-unit));
+  font-size: calc(1px + var(--ts-unit-half));
 }
 
 :host > .file-card-wrapper > .file-card--failed small:last-of-type {
   color: var(--ts-color-blue);
   cursor: pointer;
-  margin-left: calc(0.2 * var(--ts-unit));
+  margin-left: calc(0.2 * var(--ts-unit-half));
 }
 
 /* Download state.................................................. */
@@ -261,7 +261,7 @@
 :host > .file-card-wrapper > .file-card--download .icon:first-of-type span {
   bottom: 4px;
   color: var(--ts-color-black);
-  font-size: calc(1px + var(--ts-unit));
+  font-size: calc(1px + var(--ts-unit-half));
   position: absolute;
   text-transform: uppercase;
   transition: color 0.15s ease;
@@ -328,6 +328,6 @@
 :host > .file-card-wrapper > .file-card--download > .icon:last-of-type > .file-card--menu {
   color: var(--ts-color-gray-dark);
   display: none;
-  font-size: calc(3 * var(--ts-unit));
+  font-size: calc(3 * var(--ts-unit-half));
   margin-top: -13px;
 }

@@ -1,27 +1,27 @@
-import { Base } from '/core/component.js';
+import { TSElement } from '@tradeshift/elements';
+import css from './button-group.css';
 
-const [
-	$template,
-	$groupButtons
-] = [
-	Symbol('template'),
-	Symbol('groupButtons')
-];
+const [$template, $groupButtons] = [Symbol('template'), Symbol('groupButtons')];
 
-class ButtonGroup extends Base(HTMLElement, 'ButtonGroup') {
-	static get observedAttributes() { return []; }
-	constructor(...args) {
-		const self = super(...args);
-		this.styles('/button-group/button-group.css');
-		this.template(`
+class ButtonGroup extends TSElement('ButtonGroup') {
+	static get observedAttributes() {
+		return [];
+	}
+	constructor() {
+		super();
+		this.styles(css);
+		this.template(
+			`
 			<section>
 				<slot></slot>
 			</section>
-		`, $template);
+		`,
+			$template
+		);
 		this[$groupButtons] = this[$groupButtons].bind(this);
-		this.shadowRoot.querySelector('slot')
+		this.shadowRoot
+			.querySelector('slot')
 			.addEventListener('slotchange', this[$groupButtons]);
-		return self;
 	}
 	connectedCallback() {
 		if (this.isConnected) {

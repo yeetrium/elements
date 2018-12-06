@@ -1,4 +1,6 @@
-import { Base } from '/core/component.js';
+import { TSElement } from '@tradeshift/elements';
+import css from './file-uploader.css';
+
 import { defaultState } from './states/default.js';
 import { uploadingState } from './states/uploading.js';
 import { uploadFile } from './utils/uploadFile.js';
@@ -15,20 +17,21 @@ const [
   Symbol('filetypes')
 ];
 
-class FileUploader extends Base(HTMLElement, 'FileUploader') {
-  static get observedAttributes() { return ['state', 'endpoint', 'filetypes']; }
-  
-  constructor(...args) {
-    const self = super(...args);
+class FileUploader extends TSElement('FileUploader') {
+  static get observedAttributes() {
+    return ['state', 'endpoint', 'filetypes'];
+  }
+  constructor() {
+    super();
     this.filetypes = this.getAttribute('filetypes');    
 
-    this.styles('/file-uploader/file-uploader.css');
+    this.styles(css);
     this.template(`
     <div class="file-upload-wrapper">
       ${defaultState(this.filetypes)}
     </div>
-    <div class="file-card-wrapper"></div>`, 
-    $template);
+    <div class="file-card-wrapper"></div>`,
+      $template);
 
     this.fileType;
     this.formData = new FormData();
@@ -38,8 +41,6 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this.handleUpload = this.handleUpload.bind(this);
     this.handleDownload = this.handleDownload.bind(this);
     this.resetFileInfo = this.resetFileInfo.bind(this);
-
-    return self;
   }
   attributeChangedCallback(name, oldValue, newValue) {
     // attach event listener when component first loads, otherwise, attach it in the handleClose fn
@@ -68,7 +69,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
   set endpoint(endpoint) {
     if (endpoint === this[$endpoint]) {
       return;
-    }    
+    }
 
     this[$endpoint] = endpoint;
     this[endpoint ? 'setAttribute' : 'removeAttribute']('endpoint', endpoint);
@@ -99,7 +100,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
       file = this.formData.get('file');
       $fileCard.innerHTML = uploadingState(file.name);
     }
-    
+
     uploadFile(this, $fileCard, file);
   }
   handleClose(e) {

@@ -1,55 +1,157 @@
-/*
-body - rowflex- :host
-.ts-app - colflex
-.ts-main.ts-panel - hstretch
-.ts-content.ts-layout - vstretch
-.ts-panel - scrollable
-*/
-
-:host {
-	height: 100%;
-	margin: 0;
-	padding: 0;
+:host,
+:host > .header,
+:host > .footer,
+:host > .sidebar-left,
+:host > .sidebar-right,
+:host > .content,
+:host > .content > .sidebar-inner-left,
+:host > .content > .sidebar-inner-right {
 	overflow: hidden;
 }
+
+/* Grid setup */
 :host,
-:host > .colflex,
-:host > .vstretch {
-	position: relative;
-	width: 100%;
-	min-width: 100%;
-	max-width: 100%;
+:host > .content {
+	display: -ms-grid;
+	display: grid;
 }
 
-:host,
-:host > .colflex,
-:host > .hstretch,
-:host > .vstretch {
-	position: relative;
-	display: flex;
+:host {
+	min-width: 100vw;
+	max-width: 100vw;
+	width: 100vw;
+
+	min-height: 100vh;
+	max-height: 100vh;
+	height: 100vh;
+
+	-ms-grid-rows: 0 1fr 0;
+	grid-template-rows: 0 1fr 0;
+
+	-ms-grid-columns: 0 minmax(var(--ts-aside), 1fr) 0;
+	grid-template-columns: 0 minmax(var(--ts-aside), 1fr) 0;
 }
-:host,
-:host > .colflex,
-:host > .hstretch {
-	flex: 1 0 0px;
+/* Turning rows on/off */
+:host(.ts-has-header) {
+	-ms-grid-rows: max-content 1fr 0;
+	grid-template-rows: max-content 1fr 0;
 }
-:host,
-:host > .hstretch {
-	flex-direction: row;
+:host(.ts-has-footer) {
+	-ms-grid-rows: 0 1fr max-content;
+	grid-template-rows: 0 1fr max-content;
 }
-:host,
-:host > .colflex,
-:host > .vstretch {
-	flex-direction: column;
+:host(.ts-has-header.ts-has-footer) {
+	-ms-grid-rows: max-content 1fr max-content;
+	grid-template-rows: max-content 1fr max-content;
 }
-:host > .colflex {
-	width: 100%;
-	min-width: 100%;
-	max-width: 100%;
+/* Turning columns on/off */
+:host(.ts-has-sidebar-left) {
+	-ms-grid-columns: var(--ts-aside) minmax(var(--ts-aside), 1fr) 0;
+	grid-template-columns: var(--ts-aside) minmax(var(--ts-aside), 1fr) 0;
 }
-:host > .scrollable {
-	margin: 0;
+:host(.ts-has-sidebar-right) {
+	-ms-grid-columns: 0 minmax(var(--ts-aside), 1fr) var(--ts-aside);
+	grid-template-columns: 0 minmax(var(--ts-aside), 1fr) var(--ts-aside);
+}
+:host(.ts-has-sidebar-left.ts-has-sidebar-right) {
+	-ms-grid-columns: var(--ts-aside) minmax(var(--ts-aside), 1fr) var(--ts-aside);
+	grid-template-columns: var(--ts-aside) minmax(var(--ts-aside), 1fr) var(
+			--ts-aside
+		);
+}
+
+:host > .content {
+	-ms-grid-rows: 1fr;
+	grid-template-rows: 1fr;
+
+	-ms-grid-columns: 0 minmax(var(--ts-aside), 1fr) 0;
+	grid-template-columns: 0 minmax(var(--ts-aside), 1fr) 0;
+}
+:host(.ts-has-sidebar-inner-left) > .content {
+	-ms-grid-columns: var(--ts-aside) minmax(var(--ts-aside), 1fr) 0;
+	grid-template-columns: var(--ts-aside) minmax(var(--ts-aside), 1fr) 0;
+}
+:host(.ts-has-sidebar-inner-right) > .content {
+	-ms-grid-columns: 0 minmax(var(--ts-aside), 1fr) var(--ts-aside);
+	grid-template-columns: 0 minmax(var(--ts-aside), 1fr) var(--ts-aside);
+}
+:host(.ts-has-sidebar-inner-left.ts-has-sidebar-inner-right) > .content {
+	-ms-grid-columns: var(--ts-aside) minmax(var(--ts-aside), 1fr) var(--ts-aside);
+	grid-template-columns: var(--ts-aside) minmax(var(--ts-aside), 1fr) var(
+			--ts-aside
+		);
+}
+
+/* Filling up the grid */
+
+::slotted(header) {
+	-ms-grid-row: 1;
+	-ms-grid-row-span: 1;
+	grid-row: 1 / 1;
+
+	-ms-grid-column: 1;
+	-ms-grid-column-span: 3;
+	grid-column: 1 / 4;
+}
+
+::slotted(.sidebar-left),
+::slotted(.sidebar-right) {
+	-ms-grid-row: 2;
+	-ms-grid-row-span: 1;
+	grid-row: 2 / 2;
+}
+::slotted(.sidebar-inner-left),
+::slotted(.sidebar-inner-right) {
+	-ms-grid-row: 1;
+	-ms-grid-row-span: 1;
+	grid-row: 1 / 1;
+}
+::slotted(.sidebar-left),
+::slotted(.sidebar-inner-left) {
+	-ms-grid-column: 1;
+	-ms-grid-column-span: 1;
+	grid-column: 1 / 1;
+}
+::slotted(.sidebar-right),
+::slotted(.sidebar-inner-right) {
+	-ms-grid-column: 3;
+	-ms-grid-column-span: 1;
+	grid-column: 3 / 3;
+}
+
+::slotted(footer) {
+	-ms-grid-row: 3;
+	-ms-grid-row-span: 1;
+	grid-row: 3 / 3;
+
+	-ms-grid-column: 1;
+	-ms-grid-column-span: 3;
+	grid-column: 1 / 4;
+}
+
+:host > .content,
+:host > .content > main {
+	-ms-grid-column: 2;
+	-ms-grid-column-span: 1;
+	grid-column: 2 / 2;
+}
+
+:host > .content {
+	margin: 50px;
+	-ms-grid-row: 2;
+	-ms-grid-row-span: 1;
+	grid-row: 2 / 2;
+
+	-ms-grid-rows: 1fr;
+	grid-template-rows: 1fr;
+}
+
+:host > .content > main {
+	display: block;
 	overflow-x: hidden;
 	overflow-y: scroll;
-	-webkit-overflow-scrolling: touch;
+
+	-ms-grid-row: 1;
+	-ms-grid-row-span: 1;
+	grid-row: 1 / 1;
 }
