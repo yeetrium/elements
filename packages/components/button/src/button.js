@@ -1,30 +1,31 @@
-import { Base } from '/core/component.js';
+import { TSElement } from '@tradeshift/elements';
+import css from './button.css';
 
-const [
-	$template,
-	$type,
-	$grouped
-] = [
+const [$template, $type, $grouped] = [
 	Symbol('template'),
 	Symbol('type'),
 	Symbol('grouped')
 ];
 
-class Button extends Base(HTMLElement, 'Button') {
-	static get observedAttributes() { return ['type', 'grouped']; }
-	constructor(...args) {
-		const self = super(...args);
-		this.styles('/button/button.css');
-		this.template(`
+class Button extends TSElement('Button') {
+	static get observedAttributes() {
+		return ['type', 'grouped'];
+	}
+	constructor() {
+		super();
+		this.styles(css);
+		this.template(
+			`
 			<button>
 				<span>
 					<slot></slot>
 				</span>
 			</button>
-		`, $template);
+		`,
+			$template
+		);
 		this.type = this.getAttribute('type');
 		this.grouped = this.getAttribute('grouped');
-		return self;
 	}
 	get type() {
 		return this[$type];
@@ -36,7 +37,8 @@ class Button extends Base(HTMLElement, 'Button') {
 
 		this[$type] = type;
 		this[type ? 'setAttribute' : 'removeAttribute']('type', type);
-		this.shadowRoot.querySelector('button > span')
+		this.shadowRoot
+			.querySelector('button > span')
 			.classList.toggle('title', this.type !== 'text');
 	}
 	get grouped() {

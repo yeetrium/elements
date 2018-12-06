@@ -1,0 +1,9 @@
+{
+  "name": "@tradeshift/elements",
+  "version": "0.1.0",
+  "src": "src/index.js",
+  "main": "lib/core.cjs.js",
+  "module": "lib/core.mjs",
+  "browser": "lib/core.iife.js",
+  "files": ["lib/*"]
+}
