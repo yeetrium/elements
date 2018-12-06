@@ -1,8 +1,6 @@
 import { Base } from '/core/component.js';
 import { defaultState } from './states/default.js';
 import { uploadingState } from './states/uploading.js';
-// import { failedState } from './states/failed.js';
-// import { downloadState } from './states/download.js';
 import { uploadFile } from './utils/uploadFile.js';
 
 const [
