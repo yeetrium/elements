@@ -16,15 +16,17 @@ export function uploadFile(uploader, $fileCard, file) {
       }
 
       if (!body.ok) {
-        uploader.state = 'failed';
-        $fileCard.innerHTML = failedState(file.name);
-        uploader.shadowRoot.querySelector('.retry').addEventListener('click', uploader.handleUpload);
+        error(uploader, $fileCard, file);
       }
     }).catch(err => {
       if (err) {
-        uploader.state = 'failed';
-        $fileCard.innerHTML = failedState(file.name);
-        uploader.shadowRoot.querySelector('.retry').addEventListener('click', uploader.handleUpload);
+        error(uploader, $fileCard, file);
       }
     });
+}
+
+function error(uploader, $fileCard, file) {
+  uploader.state = 'failed';
+  $fileCard.innerHTML = failedState(file.name);
+  uploader.shadowRoot.querySelector('.retry').addEventListener('click', uploader.handleUpload);
 }
