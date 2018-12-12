@@ -16,10 +16,12 @@ const [
 ];
 
 class FileUploader extends Base(HTMLElement, 'FileUploader') {
-  static get observedAttributes() { return ['state', 'endpoint', 'filetypes']; }
+  static get observedAttributes() {
+    return ['state', 'endpoint', 'filetypes']; 
+  }
   
-  constructor(...args) {
-    const self = super(...args);
+  constructor() {
+    super();
     this.filetypes = this.getAttribute('filetypes');    
 
     this.styles('/file-uploader/file-uploader.css');
@@ -38,8 +40,6 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this.handleUpload = this.handleUpload.bind(this);
     this.handleDownload = this.handleDownload.bind(this);
     this.resetFileInfo = this.resetFileInfo.bind(this);
-
-    return self;
   }
   attributeChangedCallback(name, oldValue, newValue) {
     // attach event listener when component first loads, otherwise, attach it in the handleClose fn
