@@ -2,16 +2,19 @@ import { Base } from '/core/component.js';
 import { defaultState } from './states/default.js';
 import { uploadingState } from './states/uploading.js';
 import { uploadFile } from './utils/uploadFile.js';
+import { calcFileSize } from './utils/calcFileSize.js';
 
 const [
   $template,
   $state,
   $endpoint,
+  $maxfilesize,
   $filetypes
 ] = [
   Symbol('template'),
   Symbol('state'),
   Symbol('endpoint'),
+  Symbol('maxfilesize'),
   Symbol('filetypes')
 ];
 
@@ -36,6 +39,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this.formData = new FormData();
     this.state = this.getAttribute('state');
     this.endpoint = this.getAttribute('endpoint');
+    this.maxfilesize = this.getAttribute('maxfilesize');
     this.handleClose = this.handleClose.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
     this.handleDownload = this.handleDownload.bind(this);
@@ -84,6 +88,17 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this[$filetypes] = filetypes;
     this[filetypes ? 'setAttribute' : 'removeAttribute']('filetypes', filetypes);
   }
+  get maxfilesize() {
+    return this[$maxfilesize];
+  }
+  set maxfilesize(maxfilesize) {
+    if (maxfilesize === this[$maxfilesize]) {
+      return;
+    }
+
+    this[$maxfilesize] = maxfilesize;
+    this[maxfilesize ? 'setAttribute' : 'removeAttribute']('maxfilesize', maxfilesize);
+  }
   handleUpload(e) {
     const $fileCard = this.shadowRoot.querySelector('.file-card-wrapper');
     this.state = 'uploading';
@@ -93,6 +108,8 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
 
     if (uploading) {
       file = e.target.files[0];
+      if (calcFileSize(file, this.maxfilesize).tooLarge) return;
+      
       $fileCard.innerHTML = uploadingState(file.name);
       this.formData.append('file', file);
     } else {

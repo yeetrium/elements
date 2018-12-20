@@ -1,18 +1,8 @@
+import { calcFileSize } from '../utils/calcFileSize.js';
+
 export function downloadState(file) {
   const filenameParts = file.name.split('.');
   const fileExtension = filenameParts[filenameParts.length - 1];
-  const numBytes = file.size;
-  let filesize;
-  
-  // pulled from MDN
-  for (let sizes = ["kb", "mb", "gb", "tb"],
-    nMultiple = 0,
-    nApprox = numBytes / 1024;
-    nApprox > 1;
-    nApprox /= 1024,
-    nMultiple++) {
-    filesize = nApprox.toFixed(0) + sizes[nMultiple];
-  }
 
   return `
   <div class="file-card file-card--download">
@@ -28,7 +18,7 @@ export function downloadState(file) {
       <div class="file-upload--info">
         <label>${file.name}</label>
         <div>
-          <small class="filesize">${filesize} - </small>
+          <small class="filesize">${calcFileSize(file).display} - </small>
           <small class="filetype"><small>${fileExtension}</small> Document</small>
         </div>
       </div>
