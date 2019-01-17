@@ -1,7 +1,7 @@
-import { calcFileSize } from '../../file-uploader/utils/calcFileSize.js';
+import { calcFileSize } from '../utils/calcFilesize.js';
 
-export function downloadState(file) {
-  const fileExtension = file.name.split('.').pop();
+export function downloadState(fileInfo) {
+  const fileExtension = fileInfo.name.split('.').pop();
 
   return `
   <div class="file-card file-card--download">
@@ -15,9 +15,9 @@ export function downloadState(file) {
         </div>
       </div>
       <div class="file-upload--info">
-        <label>${file.name}</label>
+        <label>${fileInfo.name}</label>
         <div>
-          <small class="filesize">${calcFileSize(file).display} - </small>
+          <small class="filesize">${calcFileSize(fileInfo.size)} - </small>
           <small class="filetype"><small>${fileExtension}</small> Document</small>
         </div>
       </div>

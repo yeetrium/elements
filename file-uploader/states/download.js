@@ -1,4 +1,4 @@
-import { calcFileSize } from '../utils/calcFileSize.js';
+import { calcFileSize } from '../utils/calcFilesize.js';
 
 export function downloadState(file) {
   const fileExtension = file.name.split('.').pop();

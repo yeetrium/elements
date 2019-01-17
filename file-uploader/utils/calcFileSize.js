@@ -1,5 +1,5 @@
-export function calcFileSize(file, maxFileSize) {
-  const numBytes = file.size;
+export function calcFileSize(rawFilesize, maxFileSize) {
+  const numBytes = rawFilesize;
   let filesize;
 
   // pulled from MDN

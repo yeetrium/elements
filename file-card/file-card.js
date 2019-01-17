@@ -2,15 +2,16 @@ import { Base } from '/core/component.js';
 import { downloadState } from './states/download.js';
 import { uploadingState } from './states/uploading.js';
 import { failedState } from './states/failed.js';
+import { getFileInfo } from './utils/getFileInfo.js';
 
 const [
   $template,
   $state,
-  $file
+  $fileurl
 ] = [
     Symbol('template'),
     Symbol('state'),
-    Symbol('file')
+    Symbol('fileurl')
   ];
 
 class FileCard extends Base(HTMLElement, 'FileCard') {
@@ -27,38 +28,29 @@ class FileCard extends Base(HTMLElement, 'FileCard') {
     $template);
 
     this.state = this.getAttribute('state');
-    this.file = this.getAttribute('file');
+    this.fileurl = this.getAttribute('fileurl');
     this.resetFileInfo = this.resetFileInfo.bind(this);
     this.handleDownload = this.handleDownload.bind(this);
     this.showDownloadMessage = this.showDownloadMessage.bind(this);
   }
   attributeChangedCallback(name, oldValue, newValue) {
-    if (newValue === 'download') {
-      fetch(this.file)
-        .then(res => res.blob())
-        .then(blob => {
-          const filename = this.file.split('/').pop();
-          const fileObj = Object.assign(blob, {
-            name: filename
-          });
+    const fileInfo = getFileInfo(this.fileurl);
 
-          this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = downloadState(fileObj);
-          this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseenter', this.showDownloadMessage);
-          this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseleave', this.resetFileInfo);
-          this.shadowRoot.querySelector('.file-card--download').addEventListener('click', () => {
-            this.handleDownload(this.file, filename);
-          }, false);
-        });
+    if (newValue === 'download') {
+      this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = downloadState(fileInfo);
+      this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseenter', this.showDownloadMessage);
+      this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseleave', this.resetFileInfo);
+      this.shadowRoot.querySelector('.file-card--download').addEventListener('click', () => {
+        this.handleDownload(this.fileurl, fileInfo.name);
+      }, false);
     }
 
     if (newValue === 'uploading') {
-      const filename = this.file.split('/').pop();
-      this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = uploadingState(filename);
+      this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = uploadingState(fileInfo.name);
     }
 
     if (newValue === 'failed') {
-      const filename = this.file.split('/').pop();
-      this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = failedState(filename);
+      this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = failedState(fileInfo.name);
     }
   }
   get state() {
@@ -72,33 +64,30 @@ class FileCard extends Base(HTMLElement, 'FileCard') {
     this[$state] = state;
     this[state ? 'setAttribute' : 'removeAttribute']('state', state);
   }
-  get file() {
-    return this[$file];
+  get fileurl() {
+    return this[$fileurl];
   }
-  set file(file) {
-    if (file === this[$file]) {
+  set fileurl(fileurl) {
+    if (fileurl === this[$fileurl]) {
       return;
     }
 
-    this[$file] = file;
-    this[file ? 'setAttribute' : 'removeAttribute']('file', file);
+    this[$fileurl] = fileurl;
+    this[fileurl ? 'setAttribute' : 'removeAttribute']('fileurl', fileurl);
   }
   showDownloadMessage() {
     this.fileType = this.shadowRoot.querySelector('.filetype').innerHTML;
     this.shadowRoot.querySelector('.filetype').innerHTML = '<small class="message">Click to download</span>';
   }
   handleDownload(file, filename) {
-    const element = document.createElement('a');
-    element.setAttribute('href', file);
-    element.setAttribute('download', filename);
-    element.setAttribute('target', '_blank');
+    const link = document.createElement('a');
+    link.href = file;
+    link.download = filename;
+    link.style.display = 'none';
 
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
   resetFileInfo() {
     this.shadowRoot.querySelector('.filetype').innerHTML = this.fileType;
