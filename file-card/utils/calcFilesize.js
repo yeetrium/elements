@@ -3,7 +3,7 @@ export function calcFileSize(rawFilesize) {
   let filesize;
 
   // pulled from MDN
-  for (let sizes = ["kb", "mb", "gb", "tb"],
+  for (let sizes = [" KB", " MB", " GB", " TB"],
     nMultiple = 0,
     nApprox = numBytes / 1024;
     nApprox > 1;

@@ -1,7 +1,17 @@
 import { calcFileSize } from '../utils/calcFilesize.js';
 
-export function downloadState(fileInfo) {
+export function downloadState(fileInfo, viewOnly) {
   const fileExtension = fileInfo.name.split('.').pop();
+  const closeIcon = `
+    <div class="file-card--close icon">
+      <span class="file-card--close">x</span>
+    </div>
+  `;
+  const downloadIcon = `
+    <div class="file-card--downlaod icon">
+      <span class="file-card--downlaod">↓</span>
+    </div>
+  `;
 
   return `
   <div class="file-card file-card--download">
@@ -17,13 +27,11 @@ export function downloadState(fileInfo) {
       <div class="file-upload--info">
         <label>${fileInfo.name}</label>
         <div>
-          <small class="filesize">${calcFileSize(fileInfo.size)} - </small>
+          <small class="filesize">${calcFileSize(fileInfo.size)} | </small>
           <small class="filetype"><small>${fileExtension}</small> Document</small>
         </div>
       </div>
     </div>
-    <div class="icon">
-      <span class="file-card--menu">...</span>
-    </div>
+    ${(viewOnly === 'true') ? downloadIcon : closeIcon}
   </div>`;
 }

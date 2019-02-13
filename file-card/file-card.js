@@ -7,16 +7,18 @@ import { getFileInfo } from './utils/getFileInfo.js';
 const [
   $template,
   $state,
-  $fileurl
+  $fileurl,
+  $viewonly
 ] = [
     Symbol('template'),
     Symbol('state'),
-    Symbol('fileurl')
+    Symbol('fileurl'),
+    Symbol('viewonly')
   ];
 
 class FileCard extends Base(HTMLElement, 'FileCard') {
   static get observedAttributes() {
-    return ['state'];
+    return ['state', 'viewonly'];
   }
 
   constructor() {
@@ -29,6 +31,7 @@ class FileCard extends Base(HTMLElement, 'FileCard') {
 
     this.state = this.getAttribute('state');
     this.fileurl = this.getAttribute('fileurl');
+    this.viewonly = this.getAttribute('viewonly');
     this.resetFileInfo = this.resetFileInfo.bind(this);
     this.handleDownload = this.handleDownload.bind(this);
     this.showDownloadMessage = this.showDownloadMessage.bind(this);
@@ -36,8 +39,12 @@ class FileCard extends Base(HTMLElement, 'FileCard') {
   attributeChangedCallback(name, oldValue, newValue) {
     const fileInfo = getFileInfo(this.fileurl);
 
+    if (name === 'viewonly' && newValue === 'true') {
+      this.shadowRoot.querySelector('.file-card-wrapper').classList.add('view-only');
+    }    
+    
     if (newValue === 'download') {
-      this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = downloadState(fileInfo);
+      this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = downloadState(fileInfo, this.viewonly);
       this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseenter', this.showDownloadMessage);
       this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseleave', this.resetFileInfo);
       this.shadowRoot.querySelector('.file-card--download').addEventListener('click', () => {
@@ -75,9 +82,24 @@ class FileCard extends Base(HTMLElement, 'FileCard') {
     this[$fileurl] = fileurl;
     this[fileurl ? 'setAttribute' : 'removeAttribute']('fileurl', fileurl);
   }
+  get viewonly() {
+    return this[$viewonly];
+  }
+  set viewonly(viewonly) {
+    if (viewonly === this[$viewonly]) {
+      return;
+    }
+
+    this[$viewonly] = viewonly;
+    this[viewonly ? 'setAttribute' : 'removeAttribute']('viewonly', viewonly);
+  }
   showDownloadMessage() {
-    this.fileType = this.shadowRoot.querySelector('.filetype').innerHTML;
-    this.shadowRoot.querySelector('.filetype').innerHTML = '<small class="message">Click to download</span>';
+    const message = (this.viewonly === 'true') ? 'Download' : 'Remove';
+    this.shadowRoot.querySelector('.file-card-wrapper').classList.add('hovering');
+    this.fileInfo = this.shadowRoot.querySelector('.file-upload--info > div').innerHTML;
+
+    this.shadowRoot.querySelector('.filetype').innerHTML = `<small class="message">${message}</span>`;
+    this.shadowRoot.querySelector('.filesize').innerHTML = '';
   }
   handleDownload(file, filename) {
     const link = document.createElement('a');
@@ -90,7 +112,8 @@ class FileCard extends Base(HTMLElement, 'FileCard') {
     document.body.removeChild(link);
   }
   resetFileInfo() {
-    this.shadowRoot.querySelector('.filetype').innerHTML = this.fileType;
+    this.shadowRoot.querySelector('.file-card-wrapper').classList.remove('hovering');
+    this.shadowRoot.querySelector('.file-upload--info > div').innerHTML = this.fileInfo;
   }
 }
 

@@ -45,12 +45,12 @@
 
 :host > .file-card-wrapper > .file-card--failed small,
 :host > .file-card-wrapper > .file-card--download small {  
-  font-size: calc(1px + var(--ts-unit));
+  font-size: calc(2px + var(--ts-unit));
 }
 
 :host > .file-card-wrapper > .file-card--failed small:first-of-type,
 :host > .file-card-wrapper > .file-card--download small {
-  color: #7F7F7F;
+  color: #333;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -156,9 +156,10 @@
 }
 
 :host > .file-card-wrapper .icon:last-of-type {
-  background-color: var(--ts-color-gray-dark);
+  background-color: #506C78;
   height: 20px;
   margin-right: var(--ts-unit);
+  transition: background-color 0.15s ease;
   width: 20px;
 }
 
@@ -278,7 +279,7 @@
   cursor: pointer;
 }
 
-:host > .file-card-wrapper > .file-card--download small > small {
+:host > .file-card-wrapper > .file-card--download .filetype > small {
   text-transform: uppercase;
 }
 
@@ -287,13 +288,27 @@
   text-transform: unset;
 }
 
-:host > .file-card-wrapper > .file-card--download > .icon:last-of-type {
-  background-color: var(--ts-color-white);
+:host > .file-card-wrapper.hovering .file-card--close.icon {
+  background-color: var(--ts-color-blue);
 }
 
-:host > .file-card-wrapper > .file-card--download > .icon:last-of-type > .file-card--menu {
-  color: var(--ts-color-gray-dark);
-  display: none;
-  font-size: calc(3 * var(--ts-unit));
-  margin-top: -13px;
+:host > .file-card-wrapper .file-card--downlaod.icon {
+  background-color: unset;
+  color: #506C78;
+  transition: color 0.15s ease;
+}
+
+:host > .file-card-wrapper.hovering .file-card--downlaod.icon {
+  color: var(--ts-color-blue);;
+}
+
+:host > .file-card-wrapper .file-card--downlaod.icon > span {
+  border-bottom: 2px solid #506C78;
+  font-size: 21px;
+  padding-bottom: 2px;
+  transition: border-bottom 0.15s ease;
+}
+
+:host > .file-card-wrapper.hovering .file-card--downlaod.icon > span {
+  border-bottom: 2px solid var(--ts-color-blue);
 }
