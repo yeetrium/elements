@@ -127,7 +127,7 @@
 }
 
 :host > .file-card-wrapper .icon:first-of-type > span {
-  font-size: 20px;
+  font-size: var(--ts-unit-double);
   font-weight: bold;
 }
 
@@ -201,9 +201,9 @@
 
 :host > .file-card-wrapper .icon:last-of-type {
   background-color: var(--ts-color-gray-dark);
-  height: 20px;
+  height: var(--ts-unit-double);
   margin-right: var(--ts-unit);
-  width: 20px;
+  width: var(--ts-unit-double);
 }
 
 :host > .file-card-wrapper .icon:last-of-type:hover {
@@ -304,9 +304,9 @@
   color: white;
   content: '↓';
   font-size: 17px;
-  left: 20px;
+  left: var(--ts-unit-double);
   position: absolute;
-  top: 10px;
+  top: var(--ts-unit);
 }
 
 @keyframes appear {
@@ -314,7 +314,7 @@
     top: 30px;
   }
   100% {
-    top: 10px;
+    top: var(--ts-unit);
   }
 }
 
@@ -366,7 +366,7 @@
   border-radius: 3px;
   border: 2px solid #A5DFFF;
   display: flex;
-  height: 60px;
+  height: calc(6 * var(--ts-unit));
   justify-content: center;
   width: 300px;
 }
@@ -387,9 +387,9 @@
 
 :host > .file-upload-wrapper.dragover .draggable-info .icon {
   background-color: var(--ts-color-blue);
-  height: 20px;
+  height: var(--ts-unit-double);
   margin-right: 5px;
-  width: 20px;
+  width: var(--ts-unit-double);
 }
 
 :host > .file-upload-wrapper.dragover .draggable-info .icon > span {

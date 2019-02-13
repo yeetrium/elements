@@ -50,6 +50,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this.dragOverHandler = this.dragOverHandler.bind(this);
     this.dragLeaveHandler = this.dragLeaveHandler.bind(this);
     this.dropHandler = this.dropHandler.bind(this);
+    this.showFileSizeWarning = this.showFileSizeWarning.bind(this);
     this.fileUploadWrapper = this.shadowRoot.querySelector('.file-upload-wrapper');
   }
   attributeChangedCallback(name, oldValue, newValue) {
@@ -119,7 +120,10 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
 
     if (uploading) {
       file = e.target.files[0];
-      if (calcFileSize(file, this.maxfilesize).tooLarge) return;
+      if (calcFileSize(file.size, this.maxfilesize).tooLarge) {
+        this.showFileSizeWarning();
+        return;
+      }
       
       $fileCard.innerHTML = uploadingState(file.name);
       this.formData.append('file', file);
@@ -144,8 +148,15 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this.shadowRoot.querySelector('.filetype').innerHTML = '<small class="message">Click to download</span>';
   }
   resetFileFormats() {
+    this.shadowRoot.querySelector('.file-formats').lastChild.textContent = `Allowed formats: ${this.filetypes}`;
     this.shadowRoot.querySelector('.file-formats').style.color = '#565656';
     this.shadowRoot.querySelector('.info-icon').style.fill = '#00B0FF';
+  }
+  showFileSizeWarning() {
+    const maxFileSize = `${this.maxfilesize}MB`;
+    this.shadowRoot.querySelector('.file-formats').lastChild.textContent = `File too large. Max fize size is ${maxFileSize}.`;
+    this.shadowRoot.querySelector('.file-formats').style.color = '#FF1744';
+    this.shadowRoot.querySelector('.info-icon').style.fill = '#FF1744';
   }
   dragEnterHandler(e) {
     e.preventDefault();
@@ -179,7 +190,6 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
         }
       };
       this.handleUpload(event);
-      this.resetFileFormats();
     } else {
       this.shadowRoot.querySelector('.file-formats').style.color = '#FF1744';
       this.shadowRoot.querySelector('.info-icon').style.fill = '#FF1744';
