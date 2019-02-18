@@ -47,6 +47,9 @@ class FileCard extends Base(HTMLElement, 'FileCard') {
       this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = downloadState(fileInfo, this.viewonly);
       this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseenter', this.showDownloadMessage);
       this.shadowRoot.querySelector('.file-card--download').addEventListener('mouseleave', this.resetFileInfo);
+    }
+
+    if (newValue === 'download' && name === 'viewonly' && newValue === 'true') {
       this.shadowRoot.querySelector('.file-card--download').addEventListener('click', () => {
         this.handleDownload(this.fileurl, fileInfo.name);
       }, false);

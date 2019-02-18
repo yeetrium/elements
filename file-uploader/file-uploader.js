@@ -180,7 +180,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this.fileUploadWrapper.classList.remove('dragover');
     const dt = e.dataTransfer;
     const files = dt.files;
-    const isValidFileType = validateFileType(files[0], this.filetypes);    
+    const isValidFileType = validateFileType(files[0], this.filetypes);
 
     if (isValidFileType) {
       const event = {
@@ -193,6 +193,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     } else {
       this.shadowRoot.querySelector('.file-formats').style.color = '#FF1744';
       this.shadowRoot.querySelector('.info-icon').style.fill = '#FF1744';
+      this.shadowRoot.querySelector('.file-formats').lastChild.textContent = `Allowed formats: ${this.filetypes}`;
     }
   }
 }
