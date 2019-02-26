@@ -3,7 +3,7 @@ export function uploadingState(filename) {
   <div class="file-card file-card--uploading">
     <div class="file-info--wrapper">
       <div class="icon-wrapper">
-        <div class="icon">
+        <div class="icon icon--upload">
           <span>&#8593;</span>
         </div>
       </div>

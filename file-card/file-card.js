@@ -8,17 +8,19 @@ const [
   $template,
   $state,
   $fileurl,
+  $rightleft,
   $viewonly
 ] = [
     Symbol('template'),
     Symbol('state'),
     Symbol('fileurl'),
+    Symbol('rightleft'),
     Symbol('viewonly')
   ];
 
 class FileCard extends Base(HTMLElement, 'FileCard') {
   static get observedAttributes() {
-    return ['state', 'viewonly'];
+    return ['state', 'rightleft', 'viewonly'];
   }
 
   constructor() {
@@ -31,6 +33,7 @@ class FileCard extends Base(HTMLElement, 'FileCard') {
 
     this.state = this.getAttribute('state');
     this.fileurl = this.getAttribute('fileurl');
+    this.rightleft = this.getAttribute('rightleft');
     this.viewonly = this.getAttribute('viewonly');
     this.resetFileInfo = this.resetFileInfo.bind(this);
     this.handleDownload = this.handleDownload.bind(this);
@@ -41,7 +44,7 @@ class FileCard extends Base(HTMLElement, 'FileCard') {
 
     if (name === 'viewonly' && newValue === 'true') {
       this.shadowRoot.querySelector('.file-card-wrapper').classList.add('view-only');
-    }    
+    }
     
     if (newValue === 'download') {
       this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = downloadState(fileInfo, this.viewonly);
@@ -61,6 +64,10 @@ class FileCard extends Base(HTMLElement, 'FileCard') {
 
     if (newValue === 'failed') {
       this.shadowRoot.querySelector('.file-card-wrapper').innerHTML = failedState(fileInfo.name);
+    }
+
+    if (name === 'rightleft' && newValue === 'true') {
+      this.shadowRoot.querySelector('.file-card-wrapper').classList.add('right-left');
     }
   }
   get state() {
@@ -95,6 +102,17 @@ class FileCard extends Base(HTMLElement, 'FileCard') {
 
     this[$viewonly] = viewonly;
     this[viewonly ? 'setAttribute' : 'removeAttribute']('viewonly', viewonly);
+  }
+  get rightleft() {
+    return this[$rightleft];
+  }
+  set rightleft(rightleft) {
+    if (rightleft === this[$rightleft]) {
+      return;
+    }
+
+    this[$rightleft] = rightleft;
+    this[rightleft ? 'setAttribute' : 'removeAttribute']('rightleft', rightleft);
   }
   showDownloadMessage() {
     const message = (this.viewonly === 'true') ? 'Download' : 'Remove';

@@ -7,7 +7,7 @@
   border: var(--ts-border);
   cursor: pointer;
   display: flex;
-  height: calc(3.5 * var(--ts-unit));
+  height: calc(6.5 * var(--ts-unit));
   justify-content: space-between;
   max-width: 300px;
   margin-bottom: var(--ts-unit);
@@ -57,12 +57,6 @@
 }
 
 /* Uploading state................................................... */
-
-:host > .file-card-wrapper > .file-card {
-  cursor: default;
-  height: calc(6.5 * var(--ts-unit));
-  margin-bottom: 0;
-}
 
 :host > .file-card-wrapper > .file-card:hover {
   border: var(--ts-border);
@@ -169,6 +163,10 @@
 
 :host > .file-card-wrapper .icon:last-of-type > span {
   margin-top: -2px;
+}
+
+:host > .file-card-wrapper .icon.icon--upload > span {
+  margin-top: 0;
 }
 
 /* Failed state..................................................... */
@@ -311,4 +309,44 @@
 
 :host > .file-card-wrapper.hovering .file-card--downlaod.icon > span {
   border-bottom: 2px solid var(--ts-color-blue);
+}
+
+/* Right-to-left support.................................................. */
+
+:host > .file-card-wrapper.right-left > .file-card {
+  flex-direction: row-reverse;
+}
+
+:host > .file-card-wrapper.right-left > .file-card > .file-info--wrapper {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+:host > .file-card-wrapper.right-left > .file-card > .file-info--wrapper > .icon-wrapper {
+  margin-left: var(--ts-unit);
+  margin-right: 0;
+}
+
+:host > .file-card-wrapper.right-left .file-upload--info, 
+:host > .file-card--download.right-left .file-upload--info {
+  text-align: right;
+}
+
+:host > .file-card-wrapper.right-left > .file-card--failed .file-upload--info {
+  flex-direction: row-reverse;
+}
+
+:host > .file-card-wrapper.right-left > .file-card--failed small:last-of-type {
+  margin-left: 0;
+  margin-right: calc(0.2 * var(--ts-unit));
+}
+
+:host > .file-card-wrapper.right-left .icon.icon--upload {
+  margin-left: var(--ts-unit);
+  margin-right: 0;
+}
+
+:host > .file-card-wrapper.right-left .file-card--close.icon {
+  margin-right: 0;
+  margin-left: var(--ts-unit);
 }

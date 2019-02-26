@@ -388,11 +388,34 @@
 :host > .file-upload-wrapper.dragover .draggable-info .icon {
   background-color: var(--ts-color-blue);
   height: var(--ts-unit-double);
-  margin-right: 5px;
+  margin-right: calc(0.5 * var(--ts-unit));
   width: var(--ts-unit-double);
 }
 
 :host > .file-upload-wrapper.dragover .draggable-info .icon > span {
   font-size: 16px;
   font-weight: bold;
+}
+
+/* Right-to-left support.................................................. */
+
+:host > .file-upload-wrapper.right-left > .file-upload-button {
+  flex-direction: row-reverse;
+}
+
+:host > .file-upload-wrapper.right-left > label {
+  flex-direction: row-reverse;
+  padding-right: calc(1px + var(--ts-unit));
+}
+
+:host > .file-upload-wrapper.right-left > label > svg {
+  margin: calc(-0.2 * var(--ts-unit)) 0 0 calc(0.5 * var(--ts-unit));
+}
+
+:host > .file-upload-wrapper.dragover.right-left .draggable-info {
+  flex-direction: row-reverse;
+}
+
+:host > .file-upload-wrapper.dragover.right-left .draggable-info .icon {
+  margin-left: calc(0.5 * var(--ts-unit));
 }

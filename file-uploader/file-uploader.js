@@ -10,18 +10,20 @@ const [
   $state,
   $endpoint,
   $maxfilesize,
+  $rightleft,
   $filetypes
 ] = [
   Symbol('template'),
   Symbol('state'),
   Symbol('endpoint'),
   Symbol('maxfilesize'),
+  Symbol('rightleft'),
   Symbol('filetypes')
 ];
 
 class FileUploader extends Base(HTMLElement, 'FileUploader') {
   static get observedAttributes() {
-    return ['state', 'endpoint', 'filetypes']; 
+    return ['state', 'endpoint', 'filetypes', 'rightleft']; 
   }
   
   constructor() {
@@ -41,6 +43,7 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
     this.formData = new FormData();
     this.state = this.getAttribute('state');
     this.endpoint = this.getAttribute('endpoint');
+    this.rightleft = this.getAttribute('rightleft');
     this.maxfilesize = this.getAttribute('maxfilesize');
     this.handleClose = this.handleClose.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
@@ -65,6 +68,10 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
 
     if (newValue === 'uploading') {
       this.shadowRoot.querySelector('.file-card-wrapper').addEventListener('click', this.handleClose);
+    }
+
+    if (name === 'rightleft' && newValue === 'true') {
+      this.shadowRoot.querySelector('.file-upload-wrapper').classList.add('right-left');
     }
   }
   get state() {
@@ -110,6 +117,17 @@ class FileUploader extends Base(HTMLElement, 'FileUploader') {
 
     this[$maxfilesize] = maxfilesize;
     this[maxfilesize ? 'setAttribute' : 'removeAttribute']('maxfilesize', maxfilesize);
+  }
+  get rightleft() {
+    return this[$rightleft];
+  }
+  set rightleft(rightleft) {
+    if (rightleft === this[$rightleft]) {
+      return;
+    }
+
+    this[$rightleft] = rightleft;
+    this[rightleft ? 'setAttribute' : 'removeAttribute']('rightleft', rightleft);
   }
   handleUpload(e) {
     const $fileCard = this.shadowRoot.querySelector('.file-card-wrapper');
