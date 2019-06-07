@@ -1,0 +1,5 @@
+placeholder:
+  single: Select file
+  multiple: Select files
+allowed_formats: Allowed formats
+drop_file: Drop file

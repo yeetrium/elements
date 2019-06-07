@@ -5,6 +5,7 @@ import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import postcss from 'rollup-plugin-postcss';
 import postcssPresetEnv from 'postcss-preset-env';
+import yaml from 'rollup-plugin-yaml';
 
 const { LERNA_PACKAGE_NAME, LERNA_ROOT_PATH, PRODUCTION } = process.env;
 const PACKAGE_ROOT_PATH = process.cwd();
@@ -40,8 +41,12 @@ const postcssPlugin = postcss({
 	sourceMap: DEV && 'inline'
 });
 
+const yamlPlugin = yaml({
+	exclude: [ 'node_modules/**']
+});
+
 // Plugins used by both configs
-const commonPlugins = [postcssPlugin, resolve()];
+const commonPlugins = [postcssPlugin, yamlPlugin, resolve()];
 
 const esmCjsConfig = {
 	input: INPUT_FILE,

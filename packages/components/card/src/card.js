@@ -5,6 +5,7 @@ import {
 	customElementDefineHelper
 } from '@tradeshift/elements';
 import css from './card.css';
+import {sizes, orientations, classNames} from './utils';
 
 customElementDefineHelper(
 	'ts-card',
@@ -12,8 +13,8 @@ customElementDefineHelper(
 		constructor() {
 			super();
 			this.type = '';
-			this.size = 'full';
-			this.orientation = 'vertical';
+			this.size = sizes.full;
+			this.orientation = orientations.vertical;
 			this.rtl = false;
 			this.noPadding = false;
 			this.noHorizontalPadding = false;
@@ -47,7 +48,7 @@ customElementDefineHelper(
 		render() {
 			return html`
 				<div
-					class="card ${this.cardClassNames}"
+					class="${classNames.card}"
 					data-orientation="${this.orientation}"
 					data-type="${this.type}"
 					?data-no-padding="${this.noPadding}"

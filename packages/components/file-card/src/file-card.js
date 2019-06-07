@@ -9,14 +9,23 @@ import '@tradeshift/elements.card';
 import '@tradeshift/elements.progress-bar';
 import '@tradeshift/elements.file-size';
 import css from './file-card.css';
+import {
+	Messages,
+	slotNames,
+	customEventNames,
+	states,
+	sizes,
+	classNames,
+	selectors
+} from './utils';
 
 customElementDefineHelper(
 	'ts-file-card',
 	class extends TSElement {
 		constructor() {
 			super();
-			this.state = 'upload';
-			this.size = 'full';
+			this.state = states.uploading;
+			this.size = sizes.full;
 			this.removable = false;
 			this.toggleRemoveActionHoverState = this.toggleRemoveActionHoverState.bind(
 				this
@@ -49,9 +58,10 @@ customElementDefineHelper(
 
 		get cardType() {
 			const cardTypes = {
-				uploading: 'focus',
-				download: 'default',
-				failed: 'failed'
+				//TODO: Import card types from card component
+				[states.uploading]: 'focus',
+				[states.download]: 'default',
+				[states.failed]: 'failed'
 			};
 			return cardTypes[this.state];
 		}
@@ -61,7 +71,7 @@ customElementDefineHelper(
 				const message = this.errorMessage;
 				return html`
 					<ts-typography
-						class="error-message"
+						class="${classNames.errorMessage}"
 						text="${message}"
 						color="error"
 						variant="subtitle"
@@ -73,12 +83,10 @@ customElementDefineHelper(
 
 		get fileIcon() {
 			return html`
-				<span class="file-icon-wrapper icon-wrapper">
+				<span class="${classNames.fileIconWrapper}">
 					<!--TODO: use icon components-->
 					<svg
-						class="file-icon"
-						width="32px"
-						height="42px"
+						class="${classNames.fileIcon}"
 						viewBox="0 0 32 42"
 						version="1.1"
 						xmlns="http://www.w3.org/2000/svg"
@@ -109,9 +117,9 @@ customElementDefineHelper(
 		}
 
 		get progressBar() {
-			if (this.state === 'uploading') {
+			if (this.state === states.uploading) {
 				return html`
-					<ts-progress-bar class="progress-bar" indeterminate></ts-progress-bar>
+					<ts-progress-bar class="${classNames.progressBar}" indeterminate></ts-progress-bar>
 				`;
 			}
 		}
@@ -119,9 +127,9 @@ customElementDefineHelper(
 		get actionIcons() {
 			return html`
 				<div>
-					<span class="remove-action action-icon-wrapper icon-wrapper">
+					<span class="${classNames.removeAction} ${classNames.actionIconWrapper}">
 						<svg
-							class="action-icon"
+							class="${classNames.actionIcon}"
 							width="16px"
 							height="16px"
 							viewBox="0 0 16 16"
@@ -149,9 +157,9 @@ customElementDefineHelper(
 							</g>
 						</svg>
 					</span>
-					<span class="download-action action-icon-wrapper icon-wrapper">
+					<span class="${classNames.downloadAction} ${classNames.actionIconWrapper}">
 						<svg
-							class="action-icon"
+							class="${classNames.actionIcon}"
 							width="15px"
 							height="16px"
 							viewBox="0 0 15 16"
@@ -194,14 +202,14 @@ customElementDefineHelper(
 		}
 
 		get fileInformation() {
-			if (this.state === 'download') {
+			if (this.state === states.download) {
 				const fileExtension = this.fileObject.name
 					.split('.')
 					.pop()
 					.toUpperCase();
 
 				return html`
-					<div class="file-information">
+					<div class="${classNames.fileInformation}">
 						<ts-file-size size="${this.fileObject.size}"></ts-file-size>
 						<ts-typography
 							text="${`| ${fileExtension} Document`}"
@@ -215,17 +223,19 @@ customElementDefineHelper(
 		get actionMessage() {
 			return html`
 				<ts-typography
-					class="remove-action-message"
-					text="Remove"
+					class="${classNames.removeActionMessage}"
 					color="action"
 					variant="subtitle"
-				></ts-typography>
+				>
+					<slot name="${slotNames.removeActionText}">${Messages.general.remove}</slot>
+				</ts-typography>
 				<ts-typography
-					class="download-action-message"
-					text="Download"
+					class="${classNames.downloadActionMessage}"
 					color="action"
 					variant="subtitle"
-				></ts-typography>
+				>
+					<slot name="${slotNames.downloadActionText}">${Messages.general.download}</slot>
+				</ts-typography>
 			`;
 		}
 
@@ -263,19 +273,9 @@ customElementDefineHelper(
 			this.handleDownloadActionEvents();
 		}
 
-		connectedCallback() {
-			super.connectedCallback();
-			document.addEventListener('readystatechange', this.handleChange);
-		}
-
-		disconnectedCallback() {
-			document.removeEventListener('readystatechange', this.handleChange);
-			super.disconnectedCallback();
-		}
-
 		removeFile() {
 			if (this.removable) {
-				const event = new CustomEvent('remove', {
+				const event = new CustomEvent(customEventNames.remove, {
 					detail: {
 						file: this.fileObject
 					},
@@ -288,8 +288,8 @@ customElementDefineHelper(
 		}
 
 		downloadFile() {
-			if (this.state === 'download') {
-				const event = new CustomEvent('download', {
+			if (this.state === states.download) {
+				const event = new CustomEvent(customEventNames.download, {
 					detail: {
 						file: this.fileObject
 					},
@@ -303,40 +303,36 @@ customElementDefineHelper(
 
 		toggleRemoveActionHoverState() {
 			this.shadowRoot
-				.querySelector('.file-card-wrapper')
-				.classList.toggle('remove-action-hovered');
+				.querySelector(selectors.fileCardWrapper)
+				.classList.toggle(classNames.removeActionHovered);
 		}
 
 		toggleDownloadActionHoverState() {
 			this.shadowRoot
-				.querySelector('.file-card-wrapper')
-				.classList.toggle('download-action-hovered');
+				.querySelector(selectors.fileCardWrapper)
+				.classList.toggle(classNames.downloadActionHovered);
 		}
 
 		handleRemoveActionEvents() {
 			this.shadowRoot
-				.querySelector('.remove-action')
+				.querySelector(selectors.removeAction)
 				.addEventListener(
 					'mouseenter',
 					this.toggleRemoveActionHoverState,
 					false
 				);
 			this.shadowRoot
-				.querySelector('.remove-action')
-				.addEventListener(
-					'mouseleave',
-					this.toggleRemoveActionHoverState,
-					false
-				);
+				.querySelector(selectors.removeAction)
+				.addEventListener('mouseleave', this.toggleRemoveActionHoverState,false);
 
 			this.shadowRoot
-				.querySelector('.remove-action')
+				.querySelector(selectors.removeAction)
 				.addEventListener('click', this.removeFile);
 		}
 
 		handleDownloadActionEvents() {
-			const selectors = ['.content', '.file-icon-wrapper', '.download-action'];
-			selectors.forEach(selector => {
+			const selectorsForDownload = [selectors.textContent, selectors.fileIconWrapper, selectors.downloadAction];
+			selectorsForDownload.forEach(selector => {
 				this.shadowRoot
 					.querySelector(selector)
 					.addEventListener(
